@@ -24,6 +24,7 @@
             python313Packages.django
             python313Packages.djangorestframework
             python313Packages.djangorestframework-simplejwt
+            python313Packages.django-filter
             python313Packages.celery
             python313Packages.pillow
             python313Packages.requests
