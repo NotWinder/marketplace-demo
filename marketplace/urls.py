@@ -18,6 +18,11 @@ Including another URLconf
 # marketplace/urls.py
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 from rest_framework.routers import DefaultRouter
 
 from orders.views import CartViewSet, OrderViewSet
@@ -34,4 +39,15 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api/auth/", include("users.urls")),
+    # OpenAPI schema
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Optional interactive documentation UIs:
+    path(
+        "api/docs/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/docs/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"
+    ),
 ]

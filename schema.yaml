@@ -1,0 +1,1648 @@
+openapi: 3.0.3
+info:
+  title: My Demo API
+  version: 1.0.0
+  description: A demonstration project showing off Django REST Framework + drf-spectacular.
+paths:
+  /api/auth/change-password/:
+    put:
+      operationId: auth_change_password_update
+      description: |-
+        Change user password.
+        PUT/PATCH /api/auth/change-password/
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePassword'
+          description: ''
+    patch:
+      operationId: auth_change_password_partial_update
+      description: |-
+        Change user password.
+        PUT/PATCH /api/auth/change-password/
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePassword'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePassword'
+          description: ''
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+  /api/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      description: |-
+        Logout user by blacklisting their refresh token.
+        POST /api/auth/logout/
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/auth/profile/:
+    get:
+      operationId: auth_profile_retrieve
+      description: |-
+        Get or update user profile.
+        GET/PUT/PATCH /api/auth/profile/
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: auth_profile_update
+      description: |-
+        Get or update user profile.
+        GET/PUT/PATCH /api/auth/profile/
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: auth_profile_partial_update
+      description: |-
+        Get or update user profile.
+        GET/PUT/PATCH /api/auth/profile/
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/auth/register/:
+    post:
+      operationId: auth_register_create
+      description: |-
+        Register a new user.
+        POST /api/auth/register/
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegistration'
+          description: ''
+  /api/auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/auth/token/verify/:
+    post:
+      operationId: auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /api/cart/:
+    get:
+      operationId: cart_retrieve
+      description: |-
+        GET /api/cart/
+        Get user's cart with all items.
+      tags:
+      - cart
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: cart_create
+      description: |-
+        POST /api/cart/
+        Add item to cart.
+        Body: {"product_id": 1, "quantity": 2}
+      tags:
+      - cart
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          description: No response body
+  /api/cart/clear/:
+    delete:
+      operationId: cart_clear_destroy
+      description: |-
+        DELETE /api/cart/clear/
+        Clear all items from cart.
+      tags:
+      - cart
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/cart/items/{item_id}/:
+    patch:
+      operationId: cart_items_partial_update
+      description: |-
+        PATCH /api/cart/items/{item_id}/
+        Update quantity of a cart item.
+        Body: {"quantity": 3}
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - cart
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: cart_items_destroy
+      description: |-
+        DELETE /api/cart/items/{item_id}/
+        Remove item from cart.
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - cart
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/categories/:
+    get:
+      operationId: categories_list
+      description: |-
+        ReadOnlyModelViewSet provides:
+        - list() -> GET /api/categories/
+        - retrieve() -> GET /api/categories/{id}/
+
+        No create, update, or delete.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - categories
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCategoryList'
+          description: ''
+  /api/categories/{slug}/:
+    get:
+      operationId: categories_retrieve
+      description: |-
+        ReadOnlyModelViewSet provides:
+        - list() -> GET /api/categories/
+        - retrieve() -> GET /api/categories/{id}/
+
+        No create, update, or delete.
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - categories
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/categories/{slug}/products/:
+    get:
+      operationId: categories_products_retrieve
+      description: |-
+        Custom action: Get all products in a category
+        URL: GET /api/categories/{slug}/products/
+
+        @action parameters:
+        - detail=True: Works on a single object (requires ID/slug)
+        - detail=False: Works on the entire collection
+        - methods: HTTP methods allowed
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - categories
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/orders/:
+    get:
+      operationId: orders_list
+      description: Full order management.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderListList'
+          description: ''
+    post:
+      operationId: orders_create
+      description: |-
+        Create order from user's cart.
+        POST /api/orders/
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCreate'
+          description: ''
+  /api/orders/{id}/:
+    get:
+      operationId: orders_retrieve
+      description: Full order management.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    put:
+      operationId: orders_update
+      description: Full order management.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    patch:
+      operationId: orders_partial_update
+      description: Full order management.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    delete:
+      operationId: orders_destroy
+      description: Full order management.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/orders/{id}/cancel/:
+    post:
+      operationId: orders_cancel_create
+      description: |-
+        Cancel an order (if not shipped yet).
+        POST /api/orders/{id}/cancel/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/orders/{id}/update_status/:
+    patch:
+      operationId: orders_update_status_partial_update
+      description: |-
+        Update order status (staff only in production).
+        PATCH /api/orders/{id}/update_status/
+        Body: {"status": "shipped"}
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/products/:
+    get:
+      operationId: products_list
+      description: |-
+        ModelViewSet provides:
+        - list() -> GET /api/products/
+        - retrieve() -> GET /api/products/{id}/
+        - create() -> POST /api/products/
+        - update() -> PUT /api/products/{id}/
+        - partial_update() -> PATCH /api/products/{id}/
+        - destroy() -> DELETE /api/products/{id}/
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: seller
+        schema:
+          type: integer
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductListList'
+          description: ''
+    post:
+      operationId: products_create
+      description: |-
+        ModelViewSet provides:
+        - list() -> GET /api/products/
+        - retrieve() -> GET /api/products/{id}/
+        - create() -> POST /api/products/
+        - update() -> PUT /api/products/{id}/
+        - partial_update() -> PATCH /api/products/{id}/
+        - destroy() -> DELETE /api/products/{id}/
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCreate'
+          description: ''
+  /api/products/{slug}/:
+    get:
+      operationId: products_retrieve
+      description: |-
+        ModelViewSet provides:
+        - list() -> GET /api/products/
+        - retrieve() -> GET /api/products/{id}/
+        - create() -> POST /api/products/
+        - update() -> PUT /api/products/{id}/
+        - partial_update() -> PATCH /api/products/{id}/
+        - destroy() -> DELETE /api/products/{id}/
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+    put:
+      operationId: products_update
+      description: |-
+        ModelViewSet provides:
+        - list() -> GET /api/products/
+        - retrieve() -> GET /api/products/{id}/
+        - create() -> POST /api/products/
+        - update() -> PUT /api/products/{id}/
+        - partial_update() -> PATCH /api/products/{id}/
+        - destroy() -> DELETE /api/products/{id}/
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCreate'
+          description: ''
+    patch:
+      operationId: products_partial_update
+      description: |-
+        ModelViewSet provides:
+        - list() -> GET /api/products/
+        - retrieve() -> GET /api/products/{id}/
+        - create() -> POST /api/products/
+        - update() -> PUT /api/products/{id}/
+        - partial_update() -> PATCH /api/products/{id}/
+        - destroy() -> DELETE /api/products/{id}/
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProductCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProductCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProductCreate'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCreate'
+          description: ''
+    delete:
+      operationId: products_destroy
+      description: |-
+        ModelViewSet provides:
+        - list() -> GET /api/products/
+        - retrieve() -> GET /api/products/{id}/
+        - create() -> POST /api/products/
+        - update() -> PUT /api/products/{id}/
+        - partial_update() -> PATCH /api/products/{id}/
+        - destroy() -> DELETE /api/products/{id}/
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/products/{slug}/add_to_cart/:
+    post:
+      operationId: products_add_to_cart_create
+      description: |-
+        Add product to user's cart.
+        URL: POST /api/products/{slug}/add_to_cart/
+        Body: {"quantity": 2}
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+  /api/products/featured/:
+    get:
+      operationId: products_featured_retrieve
+      description: |-
+        Get featured products (e.g., top selling or high stock).
+        URL: GET /api/products/featured/
+
+        detail=False means it works on the collection, not a single object.
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+  /api/products/my_products/:
+    get:
+      operationId: products_my_products_retrieve
+      description: |-
+        Get all products created by the current user.
+        URL: GET /api/products/my_products/
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+components:
+  schemas:
+    BlankEnum:
+      enum:
+      - ''
+    Category:
+      type: object
+      description: |-
+        Basic serializer for Category.
+        Used for listing and detail views.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        product_count:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - product_count
+      - slug
+    ChangePassword:
+      type: object
+      description: Serializer for changing password.
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+        new_password:
+          type: string
+          writeOnly: true
+        new_password2:
+          type: string
+          writeOnly: true
+      required:
+      - new_password
+      - new_password2
+      - old_password
+    CustomTokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    Order:
+      type: object
+      description: |-
+        Full order details.
+        Used in: GET /api/orders/<id>/
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        payment_method:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentMethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        shipping_address:
+          type: string
+        phone_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        is_completed:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - is_completed
+      - items
+      - phone_number
+      - shipping_address
+      - total_price
+      - updated_at
+      - user
+      - user_email
+    OrderCreate:
+      type: object
+      description: |-
+        Creating an order from cart.
+        Used in: POST /api/orders/
+      properties:
+        payment_method:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentMethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        shipping_address:
+          type: string
+        phone_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+      required:
+      - phone_number
+      - shipping_address
+    OrderItem:
+      type: object
+      description: Order item with product snapshot (price at time of order).
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: integer
+        product_name:
+          type: string
+          readOnly: true
+        product_image:
+          type: string
+          format: uri
+          readOnly: true
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        subtotal:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - price
+      - product
+      - product_image
+      - product_name
+      - subtotal
+    OrderList:
+      type: object
+      description: |-
+        Minimal order info for listing.
+        Used in: GET /api/orders/
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        items_count:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - items_count
+      - total_price
+    PaginatedCategoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    PaginatedOrderListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderList'
+    PaginatedProductListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductList'
+    PatchedChangePassword:
+      type: object
+      description: Serializer for changing password.
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+        new_password:
+          type: string
+          writeOnly: true
+        new_password2:
+          type: string
+          writeOnly: true
+    PatchedOrder:
+      type: object
+      description: |-
+        Full order details.
+        Used in: GET /api/orders/<id>/
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        payment_method:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentMethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        shipping_address:
+          type: string
+        phone_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        is_completed:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedProductCreate:
+      type: object
+      description: |-
+        Used for creating/updating products.
+        Includes validation logic.
+        Used in: POST /api/products/, PUT/PATCH /api/products/<id>/
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        category:
+          type: integer
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+    PatchedUser:
+      type: object
+      description: Serializer for user profile.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        products_count:
+          type: string
+          readOnly: true
+        orders_count:
+          type: string
+          readOnly: true
+    PaymentMethodEnum:
+      enum:
+      - credit_card
+      - debit_card
+      - paypal
+      - cash_on_delivery
+      type: string
+      description: |-
+        * `credit_card` - Credit Card
+        * `debit_card` - Debit Card
+        * `paypal` - PayPal
+        * `cash_on_delivery` - Cash on Delivery
+    ProductCreate:
+      type: object
+      description: |-
+        Used for creating/updating products.
+        Includes validation logic.
+        Used in: POST /api/products/, PUT/PATCH /api/products/<id>/
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        category:
+          type: integer
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - category
+      - description
+      - name
+      - price
+    ProductDetail:
+      type: object
+      description: |-
+        Full product info with nested relationships.
+        Used in: GET /api/products/<id>/
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        image:
+          type: string
+          format: uri
+          nullable: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/Category'
+          readOnly: true
+        seller:
+          type: string
+          readOnly: true
+        is_active:
+          type: boolean
+        is_in_stock:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - description
+      - id
+      - is_in_stock
+      - name
+      - price
+      - seller
+      - updated_at
+    ProductList:
+      type: object
+      description: |-
+        Minimal info for product lists.
+        Used in: GET /api/products/
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        image:
+          type: string
+          format: uri
+          nullable: true
+        category_name:
+          type: string
+          readOnly: true
+        seller_name:
+          type: string
+          readOnly: true
+        is_in_stock:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category_name
+      - created_at
+      - id
+      - is_in_stock
+      - name
+      - price
+      - seller_name
+    StatusEnum:
+      enum:
+      - pending
+      - processing
+      - shipped
+      - delivered
+      - cancelled
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `processing` - Processing
+        * `shipped` - Shipped
+        * `delivered` - Delivered
+        * `cancelled` - Cancelled
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+    User:
+      type: object
+      description: Serializer for user profile.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        products_count:
+          type: string
+          readOnly: true
+        orders_count:
+          type: string
+          readOnly: true
+      required:
+      - date_joined
+      - id
+      - orders_count
+      - products_count
+      - username
+    UserRegistration:
+      type: object
+      description: Serializer for user registration.
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+          title: Confirm Password
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - first_name
+      - last_name
+      - password
+      - password2
+      - username
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

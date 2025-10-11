@@ -21,16 +21,18 @@
             postgresql
             redis
 
-            python313Packages.redis
+            python313Packages.celery
             python313Packages.django
+            python313Packages.django-filter
             python313Packages.djangorestframework
             python313Packages.djangorestframework-simplejwt
-            python313Packages.django-filter
-            python313Packages.psycopg2-binary
-            python313Packages.celery
+            python313Packages.drf-spectacular
+            python313Packages.drf-spectacular-sidecar
             python313Packages.pillow
-            python313Packages.requests
+            python313Packages.psycopg2-binary
             python313Packages.python-dotenv
+            python313Packages.redis
+            python313Packages.requests
 
             # Development tools
             python313Packages.pip
@@ -40,33 +42,33 @@
           ];
 
           shellHook = ''
-            echo "Django development environment loaded"
-            echo "Python version: $(python --version)"
-            echo "Django version: $(python -c 'import django; print(django.get_version())')"
+             echo "Django development environment loaded"
+             echo "Python version: $(python --version)"
+             echo "Django version: $(python -c 'import django; print(django.get_version())')"
 
-            # Python environment
-            export PYTHONPATH="$PWD:$PYTHONPATH"
+             # Python environment
+             export PYTHONPATH="$PWD:$PYTHONPATH"
 
-            # Create virtualenv for pip packages not in Nix
-            if [ ! -d .venv ]; then
-              python -m venv .venv
-            fi
-            source .venv/bin/activate
+             # Create virtualenv for pip packages not in Nix
+             if [ ! -d .venv ]; then
+               python -m venv .venv
+             fi
+             source .venv/bin/activate
 
-            export PGDATA=$PWD/pgdata
-            export PGHOST=localhost
-            export PGPORT=5432
+             export PGDATA=$PWD/pgdata
+             export PGHOST=localhost
+             export PGPORT=5432
 
-            if [ ! -d "$PGDATA" ]; then
-              initdb -D "$PGDATA"
-            fi
+             if [ ! -d "$PGDATA" ]; then
+               initdb -D "$PGDATA"
+             fi
 
-           #pg_ctl -D "$PGDATA" -l logfile start
-           #trap "pg_ctl -D $PGDATA stop" EXIT
+            #pg_ctl -D "$PGDATA" -l logfile start
+            #trap "pg_ctl -D $PGDATA stop" EXIT
 
 
-            echo ""
-            echo "To run Django: python manage.py runserver"
+             echo ""
+             echo "To run Django: python manage.py runserver"
           '';
         };
       }

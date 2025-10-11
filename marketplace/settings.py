@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "django_filters",
+    "drf_spectacular",
     "products",
     "orders",
     "users",
@@ -62,8 +63,17 @@ REST_FRAMEWORK = {
         "rest_framework.filters.OrderingFilter",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "PAGE_SIZE": 10,
 }
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "My Demo API",
+    "DESCRIPTION": "A demonstration project showing off Django REST Framework + drf-spectacular.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,  # avoid recursion when serving schema via Swagger
+}
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # Access token expires in 60 min
