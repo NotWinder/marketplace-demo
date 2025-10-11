@@ -1,0 +1,1 @@
+/nix/store/jq2kbdw6ljv9i47jz23pm072cfyxwpfj-postgresql-17.6/bin/postgres "-D" "pgdata"

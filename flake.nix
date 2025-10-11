@@ -18,6 +18,7 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             python313
+            postgresql
             redis
 
             python313Packages.redis
@@ -25,6 +26,7 @@
             python313Packages.djangorestframework
             python313Packages.djangorestframework-simplejwt
             python313Packages.django-filter
+            python313Packages.psycopg2-binary
             python313Packages.celery
             python313Packages.pillow
             python313Packages.requests
@@ -50,6 +52,18 @@
               python -m venv .venv
             fi
             source .venv/bin/activate
+
+            export PGDATA=$PWD/pgdata
+            export PGHOST=localhost
+            export PGPORT=5432
+
+            if [ ! -d "$PGDATA" ]; then
+              initdb -D "$PGDATA"
+            fi
+
+           #pg_ctl -D "$PGDATA" -l logfile start
+           #trap "pg_ctl -D $PGDATA stop" EXIT
+
 
             echo ""
             echo "To run Django: python manage.py runserver"
