@@ -24,8 +24,10 @@
             python313Packages.celery
             python313Packages.django
             python313Packages.django-filter
+            python313Packages.django-stubs
             python313Packages.djangorestframework
             python313Packages.djangorestframework-simplejwt
+            python313Packages.djangorestframework-stubs
             python313Packages.drf-spectacular
             python313Packages.drf-spectacular-sidecar
             python313Packages.pillow

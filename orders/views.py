@@ -3,9 +3,15 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from .models import Cart, CartItem, Order
 
-from .models import Cart, CartItem
-from .serializers import CartItemSerializer, CartSerializer
+from .serializers import (
+    CartItemSerializer,
+    CartSerializer,
+    OrderCreateSerializer,
+    OrderListSerializer,
+    OrderSerializer,
+)
 
 
 class CartViewSet(viewsets.ViewSet):
@@ -21,7 +27,7 @@ class CartViewSet(viewsets.ViewSet):
         GET /api/cart/
         Get user's cart with all items.
         """
-        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart = Cart.objects.get_or_create(user=request.user)
         serializer = CartSerializer(cart)
         return Response(serializer.data)
 
@@ -35,8 +41,9 @@ class CartViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
 
         cart, created = Cart.objects.get_or_create(user=request.user)
-        product_id = serializer.validated_data["product_id"]
-        quantity = serializer.validated_data["quantity"]
+        serializer.is_valid(raise_exception=True)
+        product_id = serializer.validated_data.get("product_id")
+        quantity = serializer.validated_data.get("quantity")
 
         # Check if item already in cart
         cart_item, created = CartItem.objects.get_or_create(
@@ -113,11 +120,6 @@ class CartViewSet(viewsets.ViewSet):
             )
 
 
-# orders/views.py (continued)
-from .models import Order, OrderItem
-from .serializers import OrderCreateSerializer, OrderListSerializer, OrderSerializer
-
-
 class OrderViewSet(viewsets.ModelViewSet):
     """
     Full order management.
@@ -147,7 +149,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         Create order from user's cart.
         POST /api/orders/
         """
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)  # pyright: ignore
         serializer.is_valid(raise_exception=True)
 
         # The serializer's create() method handles all the logic
@@ -157,7 +159,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["post"])
-    def cancel(self, request, pk=None):
+    def cancel(self, _):
         """
         Cancel an order (if not shipped yet).
         POST /api/orders/{id}/cancel/
@@ -182,7 +184,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(OrderSerializer(order).data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["patch"], permission_classes=[IsAuthenticated])
-    def update_status(self, request, pk=None):
+    def update_status(self, request, _):
         """
         Update order status (staff only in production).
         PATCH /api/orders/{id}/update_status/

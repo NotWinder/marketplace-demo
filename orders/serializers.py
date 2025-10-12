@@ -1,6 +1,7 @@
 # orders/serializers.py
 from rest_framework import serializers
 
+from products.models import Product
 from products.serializers import ProductListSerializer
 
 from .models import Cart, CartItem, Order, OrderItem
