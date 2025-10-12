@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -138,11 +139,13 @@ WSGI_APPLICATION = "marketplace.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "marketplace_db",
-        "USER": "marketplace_user",
-        "PASSWORD": "251298",
-        "HOST": "localhost",  # or your DB host
-        "PORT": "5432",  # default PostgreSQL port
+        "NAME": os.environ.get("POSTGRES_DB", "marketplace"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.environ.get(
+            "POSTGRES_HOST", "localhost"
+        ),  # This will be 'db' in Docker
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 

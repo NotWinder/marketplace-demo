@@ -18,8 +18,8 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             python313
-            postgresql
-            redis
+            docker
+            docker-compose
 
             python313Packages.celery
             python313Packages.django
