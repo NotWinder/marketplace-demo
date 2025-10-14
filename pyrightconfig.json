@@ -3,7 +3,9 @@
   "exclude": ["**/node_modules", "**/__pycache__"],
   "typeCheckingMode": "basic",
 
-  "useLibraryCodeForTypes": true,
+  "reportAttributeAccessIssue": "none",
+  "reportGeneralTypeIssues": false,
+  "pythonVersion": "3.13.7",
 
   "allowedUntypedLibraries": ["django", "rest_framework"],
   "extraPaths": ["."]

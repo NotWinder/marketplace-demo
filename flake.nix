@@ -25,6 +25,7 @@
             python313Packages.django
             python313Packages.django-filter
             python313Packages.django-stubs
+            python313Packages.django-stubs-ext
             python313Packages.djangorestframework
             python313Packages.djangorestframework-simplejwt
             python313Packages.djangorestframework-stubs
