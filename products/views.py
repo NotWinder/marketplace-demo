@@ -1,4 +1,5 @@
 # products/views.py
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
@@ -29,7 +30,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = "slug"  # Use slug instead of id in URLs
 
     @action(detail=True, methods=["get"])
-    def products(self):
+    def products(self, request, slug=None):
         """
         Custom action: Get all products in a category
         URL: GET /api/categories/{slug}/products/
@@ -52,9 +53,6 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
-# products/views.py (continued)
-
-
 class ProductViewSet(viewsets.ModelViewSet):
     """
     ModelViewSet provides:
@@ -70,9 +68,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         "category", "seller"
     )
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    permission_classes = [IsSellerOrReadOnly]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsSellerOrReadOnly]
     lookup_field = "slug"
 
     # Filtering, searching, ordering
@@ -145,10 +141,8 @@ class ProductViewSet(viewsets.ModelViewSet):
         instance.is_active = False
         instance.save()
 
-    # CUSTOM ACTIONS
-
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
-    def add_to_cart(self, request, _):
+    def add_to_cart(self, request, slug=None):
         """
         Add product to user's cart.
         URL: POST /api/products/{slug}/add_to_cart/
@@ -190,7 +184,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         )
 
     @action(detail=False, methods=["get"])
-    def featured(self, _):
+    def featured(self, request):
         """
         Get featured products (e.g., top selling or high stock).
         URL: GET /api/products/featured/

@@ -20,6 +20,7 @@
             python313
             docker
             docker-compose
+            postgresql
 
             python313Packages.django
             python313Packages.django-filter
@@ -43,33 +44,30 @@
           ];
 
           shellHook = ''
-             echo "Django development environment loaded"
-             echo "Python version: $(python --version)"
-             echo "Django version: $(python -c 'import django; print(django.get_version())')"
+            echo "Django development environment loaded"
+            echo "Python version: $(python --version)"
+            echo "Django version: $(python -c 'import django; print(django.get_version())')"
 
-             # Python environment
-             export PYTHONPATH="$PWD:$PYTHONPATH"
+            # Python environment
+            export PYTHONPATH="$PWD:$PYTHONPATH"
 
-             # Create virtualenv for pip packages not in Nix
-             if [ ! -d .venv ]; then
-               python -m venv .venv
-             fi
-             source .venv/bin/activate
+            # Create virtualenv for pip packages not in Nix
+            if [ ! -d .venv ]; then
+              python -m venv .venv
+            fi
+            source .venv/bin/activate
 
-             export PGDATA=$PWD/pgdata
-             export PGHOST=localhost
-             export PGPORT=5432
+            # PostgreSQL environment variables with defaults
+            export POSTGRES_DB=''${POSTGRES_DB:-marketplace}
+            export POSTGRES_USER=''${POSTGRES_USER:-postgres}
+            export POSTGRES_PASSWORD=''${POSTGRES_PASSWORD:-postgres}
 
-             if [ ! -d "$PGDATA" ]; then
-               initdb -D "$PGDATA"
-             fi
+            export PGDATA=$PWD/pgdata
+            export PGHOST=localhost
+            export PGPORT=5432
 
-            #pg_ctl -D "$PGDATA" -l logfile start
-            #trap "pg_ctl -D $PGDATA stop" EXIT
-
-
-             echo ""
-             echo "To run Django: python manage.py runserver"
+            echo ""
+            echo "To run Django: python manage.py runserver"
           '';
         };
       }
