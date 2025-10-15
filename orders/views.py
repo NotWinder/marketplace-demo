@@ -3,8 +3,8 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Cart, CartItem, Order
 
+from .models import Cart, CartItem, Order
 from .serializers import (
     CartItemSerializer,
     CartSerializer,
@@ -21,6 +21,7 @@ class CartViewSet(viewsets.ViewSet):
     """
 
     permission_classes = [IsAuthenticated]
+    serializer_class = CartSerializer
 
     def list(self, request):
         """
@@ -159,7 +160,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["post"])
-    def cancel(self, _):
+    def cancel(self, request, pk=None):
         """
         Cancel an order (if not shipped yet).
         POST /api/orders/{id}/cancel/
@@ -184,7 +185,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(OrderSerializer(order).data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["patch"], permission_classes=[IsAuthenticated])
-    def update_status(self, request, _):
+    def update_status(self, request, pk=None):
         """
         Update order status (staff only in production).
         PATCH /api/orders/{id}/update_status/

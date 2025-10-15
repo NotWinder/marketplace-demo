@@ -265,7 +265,7 @@ paths:
           description: ''
   /api/cart/:
     get:
-      operationId: cart_retrieve
+      operationId: cart_list
       description: |-
         GET /api/cart/
         Get user's cart with all items.
@@ -276,7 +276,13 @@ paths:
       - cookieAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+          description: ''
     post:
       operationId: cart_create
       description: |-
@@ -285,12 +291,27 @@ paths:
         Body: {"product_id": 1, "quantity": 2}
       tags:
       - cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Cart'
       security:
       - jwtAuth: []
       - cookieAuth: []
       responses:
         '201':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
   /api/cart/clear/:
     delete:
       operationId: cart_clear_destroy
@@ -320,12 +341,27 @@ paths:
         required: true
       tags:
       - cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCart'
       security:
       - jwtAuth: []
       - cookieAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
     delete:
       operationId: cart_items_destroy
       description: |-
@@ -727,6 +763,7 @@ paths:
       security:
       - jwtAuth: []
       - cookieAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -790,6 +827,7 @@ paths:
       security:
       - jwtAuth: []
       - cookieAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -950,6 +988,7 @@ paths:
       security:
       - jwtAuth: []
       - cookieAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -980,6 +1019,69 @@ components:
     BlankEnum:
       enum:
       - ''
+    Cart:
+      type: object
+      description: Full cart with all items.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        total_items:
+          type: integer
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - items
+      - total_items
+      - total_price
+      - updated_at
+    CartItem:
+      type: object
+      description: Shows items in cart with product details.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          allOf:
+          - $ref: '#/components/schemas/ProductList'
+          readOnly: true
+        product_id:
+          type: integer
+          writeOnly: true
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        added_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - added_at
+      - id
+      - product
+      - product_id
+      - subtotal
     Category:
       type: object
       description: |-
@@ -1252,6 +1354,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductList'
+    PatchedCart:
+      type: object
+      description: Full cart with all items.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        total_items:
+          type: integer
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedChangePassword:
       type: object
       description: Serializer for changing password.
@@ -1517,7 +1643,7 @@ components:
           type: string
           readOnly: true
         is_in_stock:
-          type: string
+          type: boolean
           readOnly: true
         created_at:
           type: string

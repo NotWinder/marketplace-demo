@@ -1,6 +1,6 @@
 # users/views.py
 from django.contrib.auth.models import User
-from rest_framework import generics, status
+from rest_framework import generics, serializers, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -81,6 +81,10 @@ class ChangePasswordView(generics.UpdateAPIView):
         )
 
 
+class EmptySerializer(serializers.Serializer):
+    pass
+
+
 class LogoutView(generics.GenericAPIView):
     """
     Logout user by blacklisting their refresh token.
@@ -88,6 +92,8 @@ class LogoutView(generics.GenericAPIView):
     """
 
     permission_classes = [IsAuthenticated]
+
+    serializer_class = EmptySerializer
 
     def post(self, request):
         try:

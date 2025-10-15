@@ -34,6 +34,11 @@ class ProductListSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source="category.name", read_only=True)
     seller_name = serializers.CharField(source="seller.username", read_only=True)
 
+    is_in_stock = serializers.SerializerMethodField()
+
+    def get_is_in_stock(self, obj) -> bool:
+        return obj.stock > 0
+
     class Meta:
         model = Product
         fields = [
