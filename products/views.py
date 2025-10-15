@@ -1,5 +1,4 @@
 # products/views.py
-from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
@@ -30,7 +29,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = "slug"  # Use slug instead of id in URLs
 
     @action(detail=True, methods=["get"])
-    def products(self, request, slug=None):
+    def products(self):
         """
         Custom action: Get all products in a category
         URL: GET /api/categories/{slug}/products/
@@ -149,7 +148,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     # CUSTOM ACTIONS
 
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
-    def add_to_cart(self, request, slug=None):
+    def add_to_cart(self, request, _):
         """
         Add product to user's cart.
         URL: POST /api/products/{slug}/add_to_cart/
@@ -191,7 +190,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         )
 
     @action(detail=False, methods=["get"])
-    def featured(self, request):
+    def featured(self, _):
         """
         Get featured products (e.g., top selling or high stock).
         URL: GET /api/products/featured/

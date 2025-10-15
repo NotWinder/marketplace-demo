@@ -21,7 +21,6 @@
             docker
             docker-compose
 
-            python313Packages.celery
             python313Packages.django
             python313Packages.django-filter
             python313Packages.django-stubs
@@ -34,7 +33,6 @@
             python313Packages.pillow
             python313Packages.psycopg2-binary
             python313Packages.python-dotenv
-            python313Packages.redis
             python313Packages.requests
 
             # Development tools
